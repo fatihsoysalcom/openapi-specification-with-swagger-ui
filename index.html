@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAPI with Swagger UI</title>
+    <!-- Link to Swagger UI CSS from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        #swagger-ui {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>OpenAPI Specification Rendered by Swagger UI</h1>
+    <p>This example demonstrates how an OpenAPI specification (the standard for defining APIs) can be visualized using Swagger UI (a tool that implements the specification).</p>
+
+    <!-- This is where Swagger UI will render the API documentation -->
+    <div id="swagger-ui"></div>
+
+    <!-- Link to Swagger UI JavaScript from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui-standalone-preset.js"></script>
+
+    <script>
+        // Define the OpenAPI specification directly as a YAML string.
+        // This represents the 'OpenAPI' part of the article's discussion.
+        const openApiSpec = `
+openapi: 3.0.0
+info:
+  title: Simple Greeting API
+  version: 1.0.0
+  description: |-
+    This is a very simple API to demonstrate the OpenAPI specification.
+    It has a single endpoint that returns a greeting message.
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: http://localhost:8080/v1
+    description: Local development server
+paths:
+  /greet:
+    get:
+      summary: Get a greeting message
+      description: Returns a simple "Hello World!" message.
+      operationId: getGreeting
+      responses:
+        '200':
+          description: Successful response with a greeting message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Hello from OpenAPI!
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid request parameters.
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+`;
+
+        // Initialize Swagger UI with the OpenAPI specification.
+        // This represents the 'Swagger' (tooling) part of the article's discussion,
+        // showing how Swagger UI consumes an OpenAPI definition.
+        SwaggerUIBundle({
+            spec: openApiSpec, // Pass the OpenAPI specification here
+            dom_id: '#swagger-ui', // Target DOM element to render into
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            layout: "StandaloneLayout"
+        });
+    </script>
+</body>
+</html>
